@@ -12,7 +12,7 @@ def execute(**kwargs):
     jrsync.setup()
 
     kwargs.pop("get_version")
-    force_mode = kwargs.get("force_mode", settings.DEFAULT_FORCE_MODE)
+    force_mode = kwargs.pop("force", settings.DEFAULT_FORCE_MODE)
 
     if not force_mode and not pid_control.get_exec_permission():
         logger.warning("Another instance in execution, exiting")

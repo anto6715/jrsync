@@ -19,12 +19,20 @@ def get_args(raw_args=None) -> argparse.Namespace:
         "config", type=Path, help="Json file containing sync information"
     )
     parser.add_argument(
-        "production_day", action=DataParser, help="Bulletin day in the format YYYYMMDD"
+        "date_to_sync", action=DataParser, help="Date in the format YYYYMMDD"
     )
     parser.add_argument(
         "--force",
         action="store_true",
         help="Allow to run multiple instance in the same moment",
+    )
+    parser.add_argument(
+        "-V",
+        "--version",
+        dest="get_version",
+        default=False,
+        action="store_true",
+        help="Print version and exit",
     )
     if "-V" in sys.argv or "--version" in sys.argv:
         print(importlib.metadata.version("rift"))
