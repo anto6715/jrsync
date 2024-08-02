@@ -13,17 +13,17 @@ def replace_dates(input_str, ref_date: datetime) -> str:
     Find and substitute all {{DATE-i}} pattern in the string with the correct date.
     This function will ignore all the system variables.
     """
-    input_str = input_str.replace(" ", "")
-    occurrences = RE_DATE.findall(input_str)
+    resolved_str = input_str.replace(" ", "")
+    occurrences = RE_DATE.findall(resolved_str)
     if len(occurrences) == 0:
-        raise ValueError(f'No date pattern found in string "{input_str}"')
+        return input_str
 
     # replace one by one each date placeholder
     for date_plh in occurrences:
         resolved_date = resolve_date_plh(date_plh, ref_date)
-        input_str = input_str.replace(date_plh, resolved_date)
+        resolved_str = resolved_str.replace(date_plh, resolved_date)
 
-    return input_str
+    return resolved_str
 
 
 def resolve_date_plh(date_template: str, ref_date: datetime) -> str:
@@ -46,11 +46,9 @@ def resolve_date_plh(date_template: str, ref_date: datetime) -> str:
 
 
 def resolve_str(
-        input_str: str, ref_date: datetime, date_plh=settings.DATE_PLACEHOLDER
+        input_str: str, ref_date: datetime
 ) -> str:
-    final_str = input_str
-    if date_plh in input_str:
-        final_str = replace_dates(final_str, ref_date)
+    final_str = replace_dates(input_str, ref_date)
 
     if "$" in final_str:
         final_str = evaluate_str_with_bash(final_str)
