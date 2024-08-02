@@ -1,0 +1,18 @@
+from jrsync.core import pid_control
+
+import logging
+
+import jrsync.conf as settings
+from jrsync.core import main
+
+logger = logging.getLogger("jrsync")
+
+
+def execute(*args, **kwargs):
+    kwargs.pop("get_version")
+    force_mode = kwargs.get("force_mode", settings.DEFAULT_FORCE_MODE)
+
+    if not force_mode and not pid_control.get_exec_permission():
+        logger.warning("Another instance in execution, exiting")
+
+    main.execute(**kwargs)

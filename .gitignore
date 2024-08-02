@@ -1,0 +1,9 @@
+# dirs
+.idea
+
+# files
+poetry.lock
+.pid*
+
+# extensions
+*.json
