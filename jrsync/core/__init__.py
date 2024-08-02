@@ -1,14 +1,16 @@
-from jrsync.core import pid_control
-
 import logging
 
+import jrsync
 import jrsync.conf as settings
 from jrsync.core import main
+from jrsync.core import pid_control
 
 logger = logging.getLogger("jrsync")
 
 
-def execute(*args, **kwargs):
+def execute(**kwargs):
+    jrsync.setup()
+
     kwargs.pop("get_version")
     force_mode = kwargs.get("force_mode", settings.DEFAULT_FORCE_MODE)
 
