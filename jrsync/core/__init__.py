@@ -16,5 +16,6 @@ def execute(**kwargs):
 
     if not force_mode and not pid_control.get_exec_permission():
         logger.warning("Another instance in execution, exiting")
+        exit(0)
 
     main.execute(**kwargs)
