@@ -34,7 +34,7 @@ DEFAULT_LOGGING = {
         },
     },
     "loggers": {
-        "rift": {
+        "jrsync": {
             "handlers": ["console", "console_with_debug"],
             "level": "DEBUG",
         },

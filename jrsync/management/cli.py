@@ -24,19 +24,28 @@ def get_args(raw_args=None) -> argparse.Namespace:
     parser.add_argument(
         "--src-address",
         dest="src_address",
+        default=None,
         type=str,
         help="Source address. Example: user@remote",
     )
     parser.add_argument(
         "--dst-address",
         dest="dst_address",
+        default=None,
         type=str,
-        help="Source address. Example: user@remote",
+        help="Dest address. Example: user@remote",
     )
     parser.add_argument(
         "--force",
         action="store_true",
         help="Allow to run multiple instance in the same moment",
+    )
+    parser.add_argument(
+        "-d"
+        "--dry-run",
+        dest="dry_run",
+        action="store_true",
+        help="Enable dry run mode",
     )
     parser.add_argument(
         "-V",

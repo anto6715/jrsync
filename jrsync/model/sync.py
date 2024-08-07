@@ -12,8 +12,8 @@ from jrsync.utils import str_validator
 
 class Jsync(BaseModel):
     date_to_sync: datetime
-    src_address: str = Field("")
-    dst_address: str = Field("")
+    src_address: str = Field(None)
+    dst_address: str = Field(None)
     source_dir: Path
     dest_dir: Path
     file_to_sync: List[str] | str = Field(settings.ALL_DIRECTORY)
