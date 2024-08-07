@@ -1,0 +1,10 @@
+# dirs
+__pycache__
+.idea
+
+# files
+poetry.lock
+.pid*
+
+# extensions
+*.json
