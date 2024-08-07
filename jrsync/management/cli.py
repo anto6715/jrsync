@@ -9,7 +9,7 @@ from jrsync import core
 
 class DataParser(argparse.Action):
     def __call__(self, parser, namespace, values, option_strings=None):
-        setattr(namespace, self.dest, datetime.datetime.strptime(values, '%Y%m%d'))
+        setattr(namespace, self.dest, datetime.datetime.strptime(values, "%Y%m%d"))
 
 
 def get_args(raw_args=None) -> argparse.Namespace:
@@ -20,6 +20,18 @@ def get_args(raw_args=None) -> argparse.Namespace:
     )
     parser.add_argument(
         "date_to_sync", action=DataParser, help="Date in the format YYYYMMDD"
+    )
+    parser.add_argument(
+        "--src-address",
+        dest="src_address",
+        type=str,
+        help="Source address. Example: user@remote",
+    )
+    parser.add_argument(
+        "--dst-address",
+        dest="dst_address",
+        type=str,
+        help="Source address. Example: user@remote",
     )
     parser.add_argument(
         "--force",
