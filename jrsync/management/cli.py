@@ -41,6 +41,12 @@ def get_args(raw_args=None) -> argparse.Namespace:
         help="Allow to run multiple instance in the same moment",
     )
     parser.add_argument(
+        "-o",
+        "--options",
+        type=str,
+        help="Rsync options. use -o|--options= to avoid conflicts with python args",
+    )
+    parser.add_argument(
         "-d"
         "--dry-run",
         dest="dry_run",

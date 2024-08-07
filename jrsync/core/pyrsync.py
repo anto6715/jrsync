@@ -40,7 +40,7 @@ def rsync(
 
     # build  rsync parameters
     src_path = build_sync_path(js.source_dir, [src_address, js.src_address])
-    dst_path = build_sync_path(js.dest_dir, [src_address, js.dst_address])
+    dst_path = build_sync_path(js.dest_dir, [dst_address, js.dst_address])
     files_to_sync = js.file_to_sync
 
     if files_to_sync == settings.ALL_DIRECTORY:
