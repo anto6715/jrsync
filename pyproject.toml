@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "jrsync"
 version = "0.1.0"
-description = "JSON Configurable wrapper on unix rsync "
+description = "JSON Configurable wrapper on unix rsync"
 authors = ["Antonio Mariani <antonio.mariani@cmcc.it>"]
 readme = "README.md"
 
