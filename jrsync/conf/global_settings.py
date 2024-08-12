@@ -1,7 +1,7 @@
 DEFAULT_FORCE_MODE = False
 
 # sentinel value used to sync a directory
-ALL_DIRECTORY = object()
+ALL_DIRECTORY = ""
 
 DATE_PLACEHOLDER_REGEX = r"{{DATE(?:[+-]\d+)?}}"
 DATE_PLACEHOLDER = '{{DATE}}'
