@@ -1,6 +1,7 @@
 # dirs
 __pycache__
 .idea
+dist
 
 # files
 poetry.lock
