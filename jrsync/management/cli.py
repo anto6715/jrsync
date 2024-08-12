@@ -62,7 +62,7 @@ def get_args(raw_args=None) -> argparse.Namespace:
         help="Print version and exit",
     )
     if "-V" in sys.argv or "--version" in sys.argv:
-        print(importlib.metadata.version("rift"))
+        print(importlib.metadata.version("jrsync"))
         sys.exit(0)
     return parser.parse_args(raw_args)
 
