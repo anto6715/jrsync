@@ -45,10 +45,10 @@ positional arguments:
 
 options:
   -h, --help            show this help message and exit
-  --src-address SRC_ADDRESS
-                        Source address. Example: user@remote
-  --dst-address DST_ADDRESS
-                        Dest address. Example: user@remote
+  --src-host SRC_HOST
+                        Source host. Example: user@remote
+  --dst-host DST_HOST
+                        Dest host. Example: user@remote
   --force               Allow to run multiple instance in the same moment
   -o OPTIONS, --options OPTIONS
                         Rsync options. use -o|--options= to avoid conflicts
@@ -69,7 +69,7 @@ server.
 To synchronize files from remote to local computer:
 
 ```shell
-jrsync <config> <date> --src-address user@remote
+jrsync <config> <date> --src-host user@remote
 ```
 
 #### Sync from local to remote
@@ -77,7 +77,7 @@ jrsync <config> <date> --src-address user@remote
 To synchronize files from local to remote:
 
 ```shell
-jrsync <config> <date> --dst-address user@remote
+jrsync <config> <date> --dst-host user@remote
 ```
 
 ### Rsync options
