@@ -1,77 +1,52 @@
 import logging
 import subprocess
-from pathlib import Path
-from typing import List
 
-import jrsync.conf as settings
-from jrsync.core.sync_permission import can_sync_file, can_sync_day
 from jrsync.model import Jsync
+from jrsync.utils import timelib
 
 DEFAULT_RSYNC_OPTS = "-aP"
 logger = logging.getLogger("jrsync")
 
 
-def build_sync_path(path: Path, addresses: List[str]) -> str:
-    """
-    Return path to pass to rsync attaching the first valid remote address in addresses
-    Args:
-        path: Path to sync
-        addresses: List of addresses in priority order.
-
-    Returns:
-        address:path if addresses contains at least one address not None, path otherwise
-    """
-    for address in addresses:
-        if address is not None:
-            return f"{address}:{path.as_posix()}"
-
-    return path.as_posix()
+def can_sync_day(day: str) -> bool:
+    return day == "*" or day == timelib.get_current_weekday()
 
 
 def rsync(
     js: Jsync,
-    src_address: str = None,
-    dst_address: str = None,
+    src_host: str = None,
+    dst_host: str = None,
+    options: str = None,
     **kwargs,
 ) -> None:
     if not can_sync_day(js.day):
         logger.info(f"Skipping {js}")
         return
 
-    # build  rsync parameters
-    src_path = build_sync_path(js.source_dir, [src_address, js.src_address])
-    dst_path = build_sync_path(js.dest_dir, [dst_address, js.dst_address])
-    files_to_sync = js.file_to_sync
-
-    if files_to_sync == settings.ALL_DIRECTORY:
-        rsync_args = [[f"{src_path}/", f"{dst_path}"]]
-    else:
-        rsync_args = [
-            [f"{src_path}/{f}", f"{dst_path}"]
-            for f in files_to_sync
-            if can_sync_file(f, dst_address)
-        ]
-
-    for args in rsync_args:
-        wrapper_rsync(*args, **kwargs)
-
-
-def wrapper_rsync(
-    src: str, dst: str, options: str = None, dry_run: bool = False
-) -> None:
     if options is None:
         options = DEFAULT_RSYNC_OPTS
 
-    # Base rsync command
-    command = ["rsync", options, src, dst]
+    js.override_hosts(src_host=src_host, dst_host=dst_host)
+    files_to_sync = js.get_files_to_sync(include_not_exists=True)
+    src = js.get_src()
+    dst = js.get_dst()
 
+    for f in files_to_sync:
+        command = f"rsync {options} {src}/{f} {dst}"
+        if js.dst_host is not None:
+            shell(f"ssh {js.dst_host} mkdir -p {js.dest_dir}", **kwargs)
+        shell(command, **kwargs)
+
+
+def shell(command: str, dry_run: bool = False) -> None:
     try:
         # Run the rsync command
-        str_command = [str(c) for c in command]
-        logger.info(f"Running: {' '.join(str_command)}")
+        logger.info(f"Running: {command}")
         if dry_run:
-            command = ["echo", *command]
-        subprocess.run(command, check=True)
+            command = f"echo {command}"
+
+        to_exec = command.split()
+        subprocess.run(to_exec, check=True)
 
     except subprocess.CalledProcessError as e:
         # Handle errors in rsync command execution

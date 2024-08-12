@@ -96,6 +96,50 @@ jrsync <config> <date> --options="-avug"
 
 ---
 
+## Configuration File
+
+### Attributes
+
+The configuration file is a json file which contains a list of Jsync objects with the following attributes:
+
+* `source_dir`: The directory on the source host from which files will be synchronized.
+* `dest_dir`: The directory on the destination host where files will be synchronized.
+* `day` (optional): Specifies the day of the week when the synchronization should be executed, following crontab
+  convention. For example:
+  * "*": Every day.
+  * "0": Sunday.
+  * "1": Monday, and so on.
+* `src_host` (optional): The source host from which files will be synced. If not provided, files will be synced from the
+  local machine. It can be provided as an argument from CLI
+* `dst_host` (optional): The destination host where files will be synced. If not provided, files will be synced to the
+  local machine. It can be provided as an argument from CLI
+* `file_to_sync` (optional): A list of specific files to be synchronized. If this field is omitted, all files in
+  source_dir will be synchronized.
+  Conditional Behavior: If src_host is None, only files that exist in the source_dir will be synchronized.
+
+### Dynamic Placeholders:
+
+* `{{DATE}}`: Replaces with the value of date to sync passed as argument from CLI.
+* `{{DATE + X}}`: Replaces with the date X days after date_to_sync.
+* `{{DATE - X}}`: Replaces with the date X days before date_to_sync.
+* Global Variables: You can also use global variables in this field.
+
+### Example
+
+```shell
+[
+{
+    "source_dir": "/data/{{DATE - 1}}",
+    "dest_dir": "/backup/{{DATE}}",
+    "day": "*",
+    "file_to_sync": ["important_file.txt", "logs/{{DATE - 1}}.log"]
+}
+]
+
+```
+
+---
+
 ## Authors
 
 - Antonio Mariani (antonio.mariani@cmcc.it)

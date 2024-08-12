@@ -22,15 +22,15 @@ def get_args(raw_args=None) -> argparse.Namespace:
         "date_to_sync", action=DataParser, help="Date in the format YYYYMMDD"
     )
     parser.add_argument(
-        "--src-address",
-        dest="src_address",
+        "--src-host",
+        dest="src_host",
         default=None,
         type=str,
         help="Source address. Example: user@remote",
     )
     parser.add_argument(
-        "--dst-address",
-        dest="dst_address",
+        "--dst-host",
+        dest="dst_host",
         default=None,
         type=str,
         help="Dest address. Example: user@remote",
