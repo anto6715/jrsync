@@ -14,7 +14,8 @@ def execute(**kwargs):
     kwargs.pop("get_version")
     force_mode = kwargs.pop("force", settings.DEFAULT_FORCE_MODE)
 
-    if not force_mode and not pid_control.get_exec_permission():
+    config_name = kwargs.pop("config").stem
+    if not force_mode and not pid_control.get_exec_permission(config_name):
         logger.warning("Another instance in execution, exiting")
         exit(0)
 
