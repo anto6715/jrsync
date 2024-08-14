@@ -1,5 +1,6 @@
 import logging
 import subprocess
+from datetime import datetime
 
 from jrsync.model import Jsync
 from jrsync.utils import timelib
@@ -8,8 +9,8 @@ DEFAULT_RSYNC_OPTS = "-aP"
 logger = logging.getLogger("jrsync")
 
 
-def can_sync_day(day: str) -> bool:
-    return day == "*" or day == timelib.get_current_weekday()
+def can_sync_day(weekday: str, date: datetime) -> bool:
+    return weekday == "*" or weekday == timelib.get_current_weekday(date)
 
 
 def rsync(
@@ -19,7 +20,7 @@ def rsync(
     options: str = None,
     **kwargs,
 ) -> None:
-    if not can_sync_day(js.day):
+    if not can_sync_day(js.day, js.date_to_sync):
         logger.info(f"Skipping {js}")
         return
 
