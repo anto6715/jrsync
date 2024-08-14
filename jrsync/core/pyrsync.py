@@ -27,7 +27,7 @@ def rsync(
         options = DEFAULT_RSYNC_OPTS
 
     js.override_hosts(src_host=src_host, dst_host=dst_host)
-    files_to_sync = js.get_files_to_sync(include_not_exists=True)
+    files_to_sync = js.get_files_to_sync()
     src = js.get_src()
     dst = js.get_dst()
 
@@ -45,15 +45,6 @@ def shell(command: str, dry_run: bool = False) -> None:
         if dry_run:
             command = f"echo {command}"
 
-        to_exec = command.split()
-        subprocess.run(to_exec, check=True)
-
-    except subprocess.CalledProcessError as e:
-        # Handle errors in rsync command execution
-        print("Error during rsync execution.")
-        print("Return code:", e.returncode)
-        print("Output:", e.output)
-        print("Errors:", e.stderr)
+        subprocess.run([command], check=True, text=True, shell=True)
     except Exception as e:
-        # Handle other exceptions
-        print("An unexpected error occurred:", str(e))
+        logger.error(e)

@@ -52,9 +52,13 @@ class Jsync(BaseModel):
         """Return the list of files to sync, filtering out non-existent files if src_host is None."""
         if self.src_host is None:
             # Filter files to include only existing ones in source_dir
-            return [
-                file for file in self.file_to_sync if (self.source_dir / file).exists() or include_not_exists
-            ]
+            exist = [f for f in self.file_to_sync if (self.source_dir / f).exists()]
+            not_exists = [f for f in self.file_to_sync if f not in exist]
+
+            if include_not_exists:
+                exist.extend(not_exists)
+
+            return exist
         else:
             return self.file_to_sync
 
